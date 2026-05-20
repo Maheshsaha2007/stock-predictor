@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Dashboard | StockPredictor</title>
+    <meta name="description" content="Multi-model AI stock analysis dashboard with LSTM, GRU, Random Forest predictions, VADER sentiment analysis, and logistic regression decision engine.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="company.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="antd-layout">
+    <div class="dashboard-container">
+
+        <!-- ===== Sidebar ===== -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i> <span>StockPredictor<span style="color:var(--accent-cyan);">AI</span></span>
+            </div>
+            <nav class="side-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="active"><a href="#"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-chart-pie"></i> Portfolio</a></li>
+                    <li><a href="#"><i class="fas fa-bell"></i> Alerts</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar">U</div>
+                <div class="user-info">
+                    <span class="user-name">User</span>
+                    <span class="user-status">Pro Member</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ===== Main Dashboard ===== -->
+        <main class="main-content">
+
+            <!-- AI Loading Overlay -->
+            <div id="aiLoadingOverlay" class="ai-loading-overlay">
+                <div class="spinner"></div>
+                <h2 id="loadingTitle">Training AI Neural Networks…</h2>
+                <p id="loadingSubtext">Analyzing historical patterns & technical indicators</p>
+            </div>
+
+            <!-- Dashboard Header -->
+            <header class="dashboard-header">
+                <div class="breadcrumb">
+                    <span>Market</span> / <span id="companyTickerBreadcrumb">Loading…</span>
+                </div>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Quick search symbols…" id="quickSearch">
+                    </div>
+                    <button class="btn-antd btn-ghost" id="exportBtn"><i class="fas fa-download"></i> Export</button>
+                    <button class="btn-antd" onclick="window.location.href='index.html'"><i class="fas fa-th"></i> All Stocks</button>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+
+                <!-- ===== Stock Header ===== -->
+                <div class="antd-card stock-info-card full-width">
+                    <div class="card-header-main">
+                        <div>
+                            <h1 id="companyName">Loading…</h1>
+                            <div class="live-price-group">
+                                <span class="price-value" id="currentPrice">₹0.00</span>
+                                <span class="price-change positive" id="currentChange">+0.00%</span>
+                            </div>
+                        </div>
+                        <div class="prediction-badge hold" id="recommendationBadge">EVALUATING</div>
+                    </div>
+                </div>
+
+                <!-- ===== Stats ===== -->
+                <div class="stats-grid">
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">Market Cap</span>
+                        <h3 id="fundMarketCap">--</h3>
+                    </div>
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">P/E Ratio</span>
+                        <h3 id="fundPE">--</h3>
+                    </div>
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">52W High</span>
+                        <h3 id="fund52High">--</h3>
+                    </div>
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">52W Low</span>
+                        <h3 id="fund52Low">--</h3>
+                    </div>
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">Volume</span>
+                        <h3 id="fundVolume">--</h3>
+                    </div>
+                    <div class="antd-card stat-item">
+                        <span class="stat-label">Div. Yield</span>
+                        <h3 id="fundDividendYield">--</h3>
+                    </div>
+                </div>
+
+                <!-- ===== Multi-Model Prediction Chart ===== -->
+                <div class="antd-card main-chart-card">
+                    <div class="card-header-row">
+                        <h3><i class="fas fa-chart-area" style="color:var(--accent-blue); margin-right:0.4rem;"></i> Multi-Model Price Projection</h3>
+                        <div class="model-tabs" id="modelTabs">
+                            <button class="model-tab active" data-model="all"><span class="dot" style="background:var(--text-primary);"></span> All Models</button>
+                            <button class="model-tab" data-model="lstm"><span class="dot" style="background:#58a6ff;"></span> LSTM</button>
+                            <button class="model-tab" data-model="rf"><span class="dot" style="background:#3fb950;"></span> Random Forest</button>
+                            <button class="model-tab" data-model="gru"><span class="dot" style="background:#39d2c0;"></span> GRU</button>
+                            <button class="model-tab" data-model="linear"><span class="dot" style="background:#fbbf24;"></span> Linear Reg.</button>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="predictionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- ===== Accuracy Meter ===== -->
+                <div class="antd-card ai-insights-card">
+                    <h3><i class="fas fa-bullseye"></i> Accuracy Meter</h3>
+                    <div class="insight-content">
+                        <p id="predictionText">Loading AI model weights…</p>
+                        <div class="confidence-meter">
+                            <span>Prediction Correctness</span>
+                            <div class="meter-bar"><div id="confidenceFill" style="width: 0%"></div></div>
+                            <small id="confidenceText">0%</small>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <div class="technical-indicators-mini">
+                        <div class="mini-indicator">
+                            <span>RSI</span>
+                            <strong id="rsiValue">--</strong>
+                        </div>
+                        <div class="mini-indicator">
+                            <span>MACD</span>
+                            <strong id="macdValue">--</strong>
+                        </div>
+                        <div class="mini-indicator">
+                            <span>SMA 20</span>
+                            <strong id="smaValue">--</strong>
+                        </div>
+                        <div class="mini-indicator">
+                            <span>Volatility</span>
+                            <strong id="volValue">--</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Model Comparison / Metrics ===== -->
+                <div class="antd-card model-comparison-card">
+                    <h3 style="margin-bottom:1rem;"><i class="fas fa-balance-scale" style="color:var(--accent-gold); margin-right:0.4rem;"></i> Model Performance Comparison</h3>
+                    <div class="metrics-grid" id="metricsGrid">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- ===== Sentiment Panel ===== -->
+                <div class="antd-card sentiment-card">
+                    <h3 style="margin-bottom:1rem;"><i class="fas fa-comments" style="color:var(--accent-purple); margin-right:0.4rem;"></i> VADER Sentiment Analysis</h3>
+                    <div class="sentiment-score">
+                        <span class="score-value" id="sentimentScoreValue">0.00</span>
+                        <div>
+                            <span class="score-label" id="sentimentLabel">Neutral</span>
+                            <br><small style="color:var(--text-muted);">Compound Score</small>
+                        </div>
+                    </div>
+                    <div class="sentiment-bars">
+                        <div class="sentiment-bar-row">
+                            <span class="bar-label">Positive</span>
+                            <div class="bar-track"><div class="bar-fill" id="posFill" style="width:0%; background:var(--positive);"></div></div>
+                            <span class="bar-value text-positive" id="posValue">0%</span>
+                        </div>
+                        <div class="sentiment-bar-row">
+                            <span class="bar-label">Neutral</span>
+                            <div class="bar-track"><div class="bar-fill" id="neuFill" style="width:0%; background:var(--accent-blue);"></div></div>
+                            <span class="bar-value" id="neuValue" style="color:var(--accent-blue);">0%</span>
+                        </div>
+                        <div class="sentiment-bar-row">
+                            <span class="bar-label">Negative</span>
+                            <div class="bar-track"><div class="bar-fill" id="negFill" style="width:0%; background:var(--negative);"></div></div>
+                            <span class="bar-value text-negative" id="negValue">0%</span>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <h4 style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">News Headlines</h4>
+                    <div class="headline-list" id="headlineList">
+                        <p style="color:var(--text-muted); font-size:0.85rem;">Loading headlines…</p>
+                    </div>
+                </div>
+
+                <!-- ===== Decision Panel ===== -->
+                <div class="antd-card decision-card">
+                    <h3 style="margin-bottom:0.5rem;"><i class="fas fa-gavel" style="color:var(--accent-pink); margin-right:0.4rem;"></i> Logistic Regression Decision</h3>
+                    <div class="decision-verdict" id="decisionVerdict">
+                        <div class="verdict-icon" id="verdictIcon">⏳</div>
+                        <div class="verdict-text" id="verdictText">EVALUATING</div>
+                        <div class="verdict-confidence" id="verdictConfidence">Computing…</div>
+                    </div>
+                    <div class="probability-bars" id="probabilityBars">
+                        <div class="prob-row">
+                            <span class="prob-label text-positive">BUY</span>
+                            <div class="prob-track"><div class="prob-fill" id="buyProbFill" style="width:0%; background:var(--positive);"></div></div>
+                            <span class="prob-value" id="buyProbValue">0%</span>
+                        </div>
+                        <div class="prob-row">
+                            <span class="prob-label text-warning">HOLD</span>
+                            <div class="prob-track"><div class="prob-fill" id="holdProbFill" style="width:0%; background:var(--warning);"></div></div>
+                            <span class="prob-value" id="holdProbValue">0%</span>
+                        </div>
+                        <div class="prob-row">
+                            <span class="prob-label text-negative">SELL</span>
+                            <div class="prob-track"><div class="prob-fill" id="sellProbFill" style="width:0%; background:var(--negative);"></div></div>
+                            <span class="prob-value" id="sellProbValue">0%</span>
+                        </div>
+                    </div>
+                    <div class="decision-reason" id="decisionReason">
+                        Waiting for model results…
+                    </div>
+                    <hr class="divider">
+                    <h4 style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.5rem;">Model Breakdown</h4>
+                    <div id="modelBreakdown" style="font-size:0.82rem; color:var(--text-muted);">
+                        Loading…
+                    </div>
+                </div>
+
+                <!-- ===== Corporate Portfolio & Documents ===== -->
+                <div class="antd-card company-portfolio-card">
+                    <h3 style="margin-bottom:1rem;"><i class="fas fa-briefcase" style="color:var(--accent-blue); margin-right:0.4rem;"></i> Corporate Portfolio & Documents</h3>
+                    <div class="portfolio-container">
+                        <div class="company-profile-mini">
+                            <div class="profile-row">
+                                <span class="profile-label">Sector:</span>
+                                <span id="portfolioSector" class="profile-value">--</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="profile-label">Industry:</span>
+                                <span id="portfolioIndustry" class="profile-value">--</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="profile-label">Founded:</span>
+                                <span id="portfolioFounded" class="profile-value">--</span>
+                            </div>
+                            <div class="profile-row">
+                                <span class="profile-label">Headquarters:</span>
+                                <span id="portfolioHQ" class="profile-value">--</span>
+                            </div>
+                        </div>
+                        <hr class="divider">
+                        <h4 style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.8rem;">Official PDF Releases</h4>
+                        <div class="document-list" id="documentList">
+                            <div class="document-item">
+                                <i class="far fa-file-pdf text-negative"></i>
+                                <div class="doc-info">
+                                    <span class="doc-name">Annual Report 2023-24</span>
+                                    <span class="doc-meta">Published: May 2023 • 4.2 MB</span>
+                                </div>
+                                <button class="doc-download" onclick="downloadMockDocument('Annual Report 2023-24', 'RELIANCE')" style="background:none; border:none; cursor:pointer; font-size: 1rem;"><i class="fas fa-download"></i></button>
+                            </div>
+                            <div class="document-item">
+                                <i class="far fa-file-pdf text-negative"></i>
+                                <div class="doc-info">
+                                    <span class="doc-name">Q3 Investor Presentation</span>
+                                    <span class="doc-meta">Published: Jan 2024 • 2.1 MB</span>
+                                </div>
+                                <button class="doc-download" onclick="downloadMockDocument('Q3 Investor Presentation', 'RELIANCE')" style="background:none; border:none; cursor:pointer; font-size: 1rem;"><i class="fas fa-download"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== Peer Comparison ===== -->
+                <div class="antd-card peer-comparison-card">
+                    <h3 style="margin-bottom:0.8rem;"><i class="fas fa-users" style="color:var(--accent-cyan); margin-right:0.4rem;"></i> Sector Peer Comparison</h3>
+                    <div class="table-container">
+                        <table class="antd-table">
+                            <thead>
+                                <tr>
+                                    <th>Symbol</th>
+                                    <th>Price</th>
+                                    <th>Change</th>
+                                    <th>Signal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="peerComparisonList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ===== Financial Health ===== -->
+                <div class="antd-card balance-sheet-card">
+                    <div class="card-header-row" style="margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center;">
+                        <h3 style="margin:0;"><i class="fas fa-balance-scale-left" style="color:var(--accent-gold); margin-right:0.4rem;"></i> Financial Health</h3>
+                        <div class="model-tabs" id="financialTabs">
+                            <button class="model-tab active" data-type="balance">Balance Sheet</button>
+                            <button class="model-tab" data-type="pnl">Profit & Loss</button>
+                        </div>
+                    </div>
+                    <div class="bs-chart-container">
+                        <canvas id="balanceSheetChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- ===== Cash Flow ===== -->
+                <div class="antd-card cash-flow-card">
+                    <h3 style="margin-bottom:1rem;"><i class="fas fa-money-bill-wave" style="color:var(--positive); margin-right:0.4rem;"></i> Cash Flow</h3>
+                    <div class="bs-chart-container">
+                        <canvas id="cashFlowChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- ===== Smart Alerts ===== -->
+                <div class="antd-card trading-panel">
+                    <h3><i class="fas fa-bell" style="color:var(--accent-cyan); margin-right:0.4rem;"></i> Smart Alerts</h3>
+                    <div class="alert-form">
+                        <div class="input-group">
+                            <label>Target Price (₹)</label>
+                            <input type="number" id="alertPrice" placeholder="Price in ₹">
+                        </div>
+                        <div class="input-group">
+                            <label>Direction</label>
+                            <select id="alertDirection" style="width:100%; padding:0.55rem 0.8rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-primary); color:var(--text-primary); font-family:var(--font-main); font-size:0.85rem;">
+                                <option value="above">Price goes above</option>
+                                <option value="below">Price goes below</option>
+                            </select>
+                        </div>
+                        <div class="input-group" style="grid-column: 1 / -1;">
+                            <label>Notify Via</label>
+                            <select id="alertMethod" style="width:100%; padding:0.55rem 0.8rem; border-radius:var(--radius-sm); border:1px solid var(--border-color); background:var(--bg-primary); color:var(--text-primary); font-family:var(--font-main); font-size:0.85rem;">
+                                <option value="Email">Email</option>
+                                <option value="SMS">SMS</option>
+                                <option value="Push">App Push</option>
+                            </select>
+                        </div>
+                        <button id="setAlertBtn" class="btn-antd" style="grid-column: 1 / -1;">Set Alert</button>
+                    </div>
+                    <div class="active-alerts" id="alertsList"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Chatbot -->
+    <button id="chatbotToggleBtn" class="chat-fab"><i class="fas fa-comment-dots"></i></button>
+    <div id="chatbotWindow" class="chat-window antd-card">
+        <div class="chat-header">
+            <span><i class="fas fa-robot" style="margin-right:0.4rem;"></i> AI Trading Assistant</span>
+            <button id="closeChatbotBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chatbotMessages"></div>
+        <div class="chat-footer">
+            <input type="text" id="chatbotInput" placeholder="Ask about this stock…">
+            <button id="chatbotSendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="companies-data.js"></script>
+    <script src="company.js"></script>
+</body>
+</html>

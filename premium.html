@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockerAI Premium | Elite Trading Intelligence</title>
+    <meta name="description" content="Upgrade to StockerAI Premium for real-time latency, infinite APIs, advanced neural network custom models, and much more.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .premium-hero {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .premium-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), #fff9d2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .premium-hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+        
+        .pricing-plans {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            padding: 0 2rem 5rem;
+        }
+
+        .pricing-card {
+            background: var(--bg-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            width: 350px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent-blue);
+        }
+
+        .pricing-card.elite {
+            border-color: var(--accent-gold);
+            background: linear-gradient(180deg, rgba(234, 179, 8, 0.05) 0%, var(--bg-hover) 100%);
+        }
+        
+        .pricing-card.elite::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: 15px;
+            right: -35px;
+            background: var(--accent-gold);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.7rem;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            letter-spacing: 1px;
+        }
+
+        .pricing-card.pro:hover { border-color: var(--accent-blue); }
+        .pricing-card.elite:hover { 
+            border-color: var(--accent-gold);
+            box-shadow: 0 20px 40px rgba(234, 179, 8, 0.15);
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-price {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2.5rem 0;
+            text-align: left;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .plan-features li i {
+            color: var(--positive);
+            font-size: 1.1rem;
+        }
+
+        .btn-buy {
+            padding: 1rem 2rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .btn-buy.pro {
+            background: transparent;
+            border: 2px solid var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .btn-buy.pro:hover {
+            background: var(--accent-blue);
+            color: white;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-buy.elite {
+            background: var(--accent-gold);
+            color: #000;
+        }
+
+        .btn-buy.elite:hover {
+            background: #fde047;
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.6);
+            transform: scale(1.05);
+        }
+        
+        .pulse-gold {
+            animation: pulse-glow 2s infinite;
+        }
+        
+        @keyframes pulse-glow {
+            0% { text-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
+            50% { text-shadow: 0 0 20px rgba(234, 179, 8, 0.8); }
+            100% { text-shadow: 0 0 5px rgba(234, 179, 8, 0.2); }
+        }
+    </style>
+</head>
+<body class="landing-page">
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <a href="index.html" style="text-decoration:none; color:inherit;">
+                <i class="fas fa-chart-line"></i> <span>Stocker<span style="color: var(--accent-cyan);">AI</span></span>
+            </a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="stocks.html">Markets</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="#" style="color: var(--accent-gold); font-weight: bold;"><i class="fas fa-crown"></i> Premium</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="premium-hero fade-in delay-1">
+            <h1 class="pulse-gold">Unlock Neural Supremacy</h1>
+            <p>Elevate your trading strategy with unrestricted API calls, sub-millisecond AI inferences, and exclusive institutional-grade models.</p>
+        </section>
+
+        <section class="pricing-plans fade-in delay-2">
+            <!-- Pro Plan -->
+            <div class="pricing-card pro">
+                <div class="plan-name">Pro Trader</div>
+                <div class="plan-price">₹1,999<span> /month</span></div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> Basic LSTM & GRU Models</li>
+                    <li><i class="fas fa-check-circle"></i> End-of-Day Sentiment Analysis</li>
+                    <li><i class="fas fa-check-circle"></i> 500 API Calls per day</li>
+                    <li><i class="fas fa-check-circle"></i> Standard Technical Indicators</li>
+                    <li><i class="fas fa-check-circle" style="color:var(--text-muted); opacity: 0.5;"></i> <span style="opacity:0.5;">No Real-time Live Quotes</span></li>
+                </ul>
+                <button class="btn-buy pro">Subscribe to Pro</button>
+            </div>
+
+            <!-- Elite Plan -->
+            <div class="pricing-card elite">
+                <div class="plan-name" style="color:var(--accent-gold);">experianced trader</div>
+                <div class="plan-price">₹4,999<span> /month</span></div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check-circle"></i> Advanced Multi-Model AI Ensemble</li>
+                    <li><i class="fas fa-check-circle"></i> Real-time Global News Sentiment</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Unlimited</strong> API Inferences</li>
+                    <li><i class="fas fa-check-circle"></i> Sub-millisecond Execution Metrics</li>
+                    <li><i class="fas fa-check-circle"></i> Live Broker Integration (Zerodha/Groww)</li>
+                    <li><i class="fas fa-check-circle"></i> Priority WhatsApp Support Line</li>
+                </ul>
+                <button class="btn-buy elite"><i class="fas fa-crown"></i> Get Elite Access</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-brand">Stocker<span style="color:var(--accent-cyan);">AI</span></div>
+        <p>Your Ultimate Stock Prediction Companion.</p>
+        <p style="margin-top:0.5rem;">Disclaimer: Trading involves high risk. Premium plans are non-refundable.</p>
+    </footer>
+
+</body>
+</html>

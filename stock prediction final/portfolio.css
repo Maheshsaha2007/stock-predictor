@@ -1,0 +1,114 @@
+/* Full-universe portfolio table */
+
+.portfolio-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.portfolio-quote-meta {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.portfolio-quote-meta strong {
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+.portfolio-table-wrap {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 12px);
+    overflow: auto;
+    max-height: min(70vh, 720px);
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.portfolio-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+}
+
+.portfolio-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    background: rgba(15, 20, 32, 0.98);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.portfolio-table tbody td {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    vertical-align: middle;
+}
+
+.portfolio-table tbody tr:hover td {
+    background: rgba(88, 166, 255, 0.06);
+}
+
+.portfolio-table .col-num {
+    width: 3rem;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.portfolio-table .ticker-cell {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.portfolio-table .name-cell {
+    color: var(--text-primary);
+    max-width: 280px;
+}
+
+.portfolio-table .sector-pill {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(88, 166, 255, 0.12);
+    color: var(--accent-blue);
+}
+
+.portfolio-table .num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.portfolio-table .change-pos {
+    color: var(--positive);
+}
+
+.portfolio-table .change-neg {
+    color: var(--negative);
+}
+
+.portfolio-table .action-cell a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.82rem;
+}
+
+.portfolio-table .action-cell a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .portfolio-table .name-cell {
+        max-width: 160px;
+    }
+}
