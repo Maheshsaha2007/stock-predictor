@@ -52,3 +52,4 @@ A comprehensive full-stack modern application for stock market prediction, analy
 
 ## License
 MIT
+be coding using promt[somehtin i didten like about my project is it is createcd by vif
